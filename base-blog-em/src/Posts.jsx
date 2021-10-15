@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useQuery } from 'react-query'
+import React, { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from 'react-query'
 
 import { PostDetail } from "./PostDetail";
 const maxPostPage = 10;
@@ -15,8 +15,23 @@ export function Posts() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPost, setSelectedPost] = useState(null);
 
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    if (currentPage < maxPostPage) {
+      const nextPage = currentPage + 1
+      queryClient.prefetchQuery(['post', nextPage], () => fetchPosts(nextPage))
+    }
+  }, [currentPage, queryClient])
+
   // replace with useQuery
-  const { data, isError, error, isLoading } = useQuery(['post', currentPage], () => fetchPosts(currentPage), {staleTime: 2000}) //  first argument is the name of the query and the second it the request function
+  const { data, isError, error, isLoading } = useQuery(
+    ['post', currentPage],
+    () => fetchPosts(currentPage), 
+    {
+      staleTime: 2000,
+      keepPreviousData: true
+    }) //  first argument is the name of the query and the second it the request function
   if (isLoading) return <h3>Loading...</h3>
   if (isError) return (
     <React.Fragment>
