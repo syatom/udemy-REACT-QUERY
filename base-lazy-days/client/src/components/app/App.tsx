@@ -1,9 +1,8 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { ReactElement } from 'react';
-import { queryClient } from '../../react-query/queryClient'
+import { queryClient } from '../../react-query/queryClient';
 import { QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools'
-
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { theme } from '../../theme';
 import { Loading } from './Loading';
 import { Navbar } from './Navbar';
